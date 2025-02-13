@@ -1,7 +1,9 @@
 using Data.Context;
 using Data.Repository;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Services.Authentication;
 using Services.AutoMapper;
 using Services.Interface;
 using Services.Service;
@@ -23,6 +25,7 @@ public class Program
         
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            
 
         #region AutoMapper
         builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
@@ -39,7 +42,21 @@ public class Program
         builder.Services.AddScoped<IUsuarioService, UsuarioService>();
         builder.Services.AddScoped<IRoleService, RoleService>();
         builder.Services.AddScoped<IUsuarioRoleService, UsuarioRoleService>();
+        builder.Services.AddScoped<ILoginService, LoginService>();
+        builder.Services.AddScoped<ITokenManager, TokenManager>();
         #endregion
+
+        
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = TokenHelpers.GetTokenValidationParameters(builder.Configuration);
+        });
+
+        builder.Services.AddAuthorization();
 
         var app = builder.Build();
 
