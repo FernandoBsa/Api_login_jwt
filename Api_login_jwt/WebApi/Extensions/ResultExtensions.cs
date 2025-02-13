@@ -1,4 +1,4 @@
-﻿using Services.Result;
+﻿using Services.Results;
 
 namespace WebApi.Extensions;
 

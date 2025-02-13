@@ -1,4 +1,4 @@
-﻿namespace Services.Result;
+﻿namespace Services.Results;
 
 public class Result<T>
 {
