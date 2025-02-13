@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Services.Interface;
 using Services.Request;
-using Services.Result;
 using WebApi.Extensions;
 
 namespace WebApi.Controllers;
@@ -38,6 +37,14 @@ public class UsuarioController : ControllerBase
     public async Task<IResult> GetByIdAsync(Guid id)
     {
         var result = await _usuarioService.GetByIdAsync(id);
+        
+        return Results.Extensions.MapResult(result);
+    }
+    
+    [HttpGet("with-role/{id}")]
+    public async Task<IResult> GetByIdWithRoleAsync(Guid id)
+    {
+        var result = await _usuarioService.GetByIdWithRolesync(id);
         
         return Results.Extensions.MapResult(result);
     }

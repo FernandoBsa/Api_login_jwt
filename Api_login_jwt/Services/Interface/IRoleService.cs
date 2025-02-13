@@ -1,6 +1,6 @@
 ﻿using Domain.Entity;
 using Services.Request;
-using Services.Result;
+using Services.Results;
 
 namespace Services.Interface;
 

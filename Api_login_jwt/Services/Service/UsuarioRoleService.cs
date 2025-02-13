@@ -3,7 +3,7 @@ using Domain.Entity;
 using Domain.Interfaces;
 using Services.Interface;
 using Services.Request;
-using Services.Result;
+using Services.Results;
 
 namespace Services.Service;
 

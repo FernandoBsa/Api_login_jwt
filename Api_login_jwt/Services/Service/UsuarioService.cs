@@ -4,7 +4,7 @@ using Domain.Entity;
 using Domain.Interfaces;
 using Services.Interface;
 using Services.Request;
-using Services.Result;
+using Services.Results;
 
 namespace Services.Service;
 
@@ -58,6 +58,32 @@ public class UsuarioService : IUsuarioService
             return Result<Usuario>.Failure(Error.Failure("UsuarioService.GetById", ex.Message));
         }
     }
+    
+    public async Task<Result<UsuarioDTO>> GetByIdWithRolesync(Guid id)
+    {
+        try
+        {
+            if (id == Guid.Empty)
+            {
+                return Result<UsuarioDTO>.Failure(Error.Validation("UsuarioService.MissingId", "ID cannot be empty"));
+            }
+
+            var entity = await _repository.GetByIdWhitRole(id);
+
+            if (entity == null)
+            {
+                return Result<UsuarioDTO>.Failure(Error.NotFound("UsuarioService.NotFoundEntity", "Entity not found"));
+            }
+            
+            var result = _mapper.Map<UsuarioDTO>(entity);
+
+            return Result<UsuarioDTO>.Success(result);
+        }
+        catch (Exception ex)
+        {
+            return Result<UsuarioDTO>.Failure(Error.Failure("UsuarioService.GetById", ex.Message));
+        }
+    }
 
     public async Task<Result<Usuario>> AddAsync(AddUsuarioRequest entity)
     {
@@ -83,7 +109,11 @@ public class UsuarioService : IUsuarioService
                 return Result<Usuario>.Failure(Error.Validation("UsuarioService.MissingPassword", "Password cannot be empty or whitespace"));
             }
             
+            string senhaEncriptado = BCrypt.Net.BCrypt.HashPassword(entity.Senha);
+                
             var result = _mapper.Map<Usuario>(entity);
+            
+            result.Senha = senhaEncriptado;
 
             await _repository.AddAsync(result);
             await _repository.SaveChangesAsync();
