@@ -18,18 +18,26 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         
+        modelBuilder.Entity<Usuario>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
+        modelBuilder.Entity<Usuario>()
+            .HasIndex(u => u.Nome)
+            .IsUnique();
+
         modelBuilder.Entity<UsuarioRole>()
-            .HasKey(ur => ur.Id);
+            .HasKey(ur => ur.Id); 
 
         modelBuilder.Entity<UsuarioRole>()
             .HasOne(ur => ur.Usuario)
             .WithMany(u => u.UsuarioRoles)
-            .HasForeignKey(ur => ur.IdUsuario); 
+            .HasForeignKey(ur => ur.IdUsuario);
 
         modelBuilder.Entity<UsuarioRole>()
             .HasOne(ur => ur.Role)
             .WithMany(r => r.UsuarioRoles)
-            .HasForeignKey(ur => ur.IdRole); 
+            .HasForeignKey(ur => ur.IdRole);
 
         modelBuilder.Entity<UsuarioRole>()
             .HasIndex(ur => new { ur.IdUsuario, ur.IdRole })
