@@ -18,4 +18,22 @@ public class UsuarioRepository : GenericRepository<Usuario>, IUsuarioRepository
         var usuarios = _context.Usuarios.Include(u => u.UsuarioRoles).ThenInclude(ur => ur.Role);
         return await usuarios.ToListAsync();
     }
+
+    public async Task<Usuario> GetByIdWhitRole(Guid Id)
+    {
+        return _context.Usuarios
+            .Where(ui => ui.Id == Id)
+            .Include(u => u.UsuarioRoles)
+                .ThenInclude(ur => ur.Role)
+            .SingleOrDefault();
+    }
+
+    public async Task<Usuario> GetByEmailWithRoles(string email)
+    {
+        return _context.Usuarios
+            .Where(u => u.Email == email)
+            .Include(u => u.UsuarioRoles)
+            .ThenInclude(ur => ur.Role)
+            .SingleOrDefault();
+    }
 }
