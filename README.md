@@ -1,4 +1,4 @@
-# Aplicacao de Login com JWT
+# Aplicação de Login com JWT
 
 Esta é uma aplicação de exemplo que demonstra como implementar um sistema de autenticação usando JWT (JSON Web Tokens) com Entity Framework Core, Migrations, Injeção de Dependência (DI) e uma arquitetura organizada.
 
