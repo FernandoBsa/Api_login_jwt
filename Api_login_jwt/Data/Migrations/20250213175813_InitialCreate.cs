@@ -72,6 +72,18 @@ namespace Data.Migrations
                 table: "UsuarioRoles",
                 columns: new[] { "IdUsuario", "IdRole" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Email",
+                table: "Usuarios",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Nome",
+                table: "Usuarios",
+                column: "Nome",
+                unique: true);
         }
 
         /// <inheritdoc />

@@ -57,6 +57,12 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Nome")
+                        .IsUnique();
+
                     b.ToTable("Usuarios");
                 });
 
